@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c0c0d">
+<title>Stocks — L'Eau Noire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-stocks">
+
+<div class="backdrop-title" aria-hidden="true">Réserve</div>
+
+<div class="frame">
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <header class="nav">
+    <a class="brand" href="index.html#accueil">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>L'Eau Noire</strong><small>Forge de la communauté bretonne</small></span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="index.html#accueil">Accueil</a>
+      <a href="index.html#communaute">La communauté</a>
+      <a href="index.html#catalogue">Catalogue</a>
+      <a href="index.html#licences">Licences</a>
+      <a href="stocks.html" class="active">Stocks</a>
+    </nav>
+    <button class="burger" id="burger" type="button" aria-label="Menu"><span></span><span></span></button>
+  </header>
+
+  <!-- ===================== EN-TÊTE ===================== -->
+  <section class="stock-hero">
+    <div>
+      <p class="eyebrow">Réserve de la forge</p>
+      <h1>Stocks</h1>
+      <p class="hero-lead">Minerais, lingots, cuirs et matériaux rares disponibles à la forge de l'Eau Noire. Les matériaux sous leur seuil sont signalés pour être réapprovisionnés en priorité.</p>
+      <p class="stock-maj" id="stock-maj"></p>
+    </div>
+    <div class="stock-summary" id="stock-summary"></div>
+  </section>
+
+  <!-- ===================== INVENTAIRE ===================== -->
+  <section class="catalogue stock-section">
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Rechercher un matériau… (touche /)" autocomplete="off">
+      <div class="tabs" id="tabs"></div>
+      <div class="toggles">
+        <label class="switch"><input type="checkbox" id="t-alert"><span></span>Alertes uniquement</label>
+        <label class="switch"><input type="checkbox" id="t-edit"><span></span>Modifier</label>
+      </div>
+    </div>
+
+    <!-- Bandeau visible dès qu'une quantité a été modifiée -->
+    <div class="draft-bar" id="draft-bar" hidden>
+      <p><strong>Modifications non publiées.</strong> Elles ne sont enregistrées que dans ce navigateur. Exportez <code>stocks.js</code> puis publiez-le pour que tout le monde les voie.</p>
+      <div class="draft-actions">
+        <button class="btn-ghost" id="draft-reset" type="button">Annuler</button>
+        <button class="btn" id="draft-export" type="button">Exporter stocks.js</button>
+      </div>
+    </div>
+
+    <div class="stock-actions">
+      <button class="btn-ghost" id="report-copy" type="button">Copier la liste de réapprovisionnement</button>
+    </div>
+
+    <div id="stock-list"></div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-devise">Le fer se plie, l'Eau Noire demeure.</p>
+    <p class="footer-contact"><a href="index.html#catalogue">Retour au catalogue</a></p>
+  </footer>
+</div>
+
+<script src="stocks.js"></script>
+<script src="stocks-page.js"></script>
+</body>
+</html>

@@ -325,6 +325,117 @@ img { max-width: 100%; }
 }
 
 /* =====================================================================
+   PAGE STOCKS
+   ===================================================================== */
+:root { --ok: #7fae8a; --bas: #e0a35a; --rupture: #d0675a; }
+
+.stock-hero {
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: 1fr minmax(320px, 46%); gap: 40px; align-items: end;
+  padding: clamp(36px, 6vw, 80px) var(--pad) clamp(30px, 4vw, 50px);
+}
+.stock-hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-radial-gradient(circle at 92% 10%, transparent 0 60px, rgba(236, 226, 207, .035) 61px 62px);
+  -webkit-mask-image: radial-gradient(circle at 92% 10%, #000 0 25%, transparent 60%);
+          mask-image: radial-gradient(circle at 92% 10%, #000 0 25%, transparent 60%);
+}
+.stock-hero h1 { margin: 0; font-weight: 300; font-size: clamp(2.6rem, 6vw, 4.4rem); letter-spacing: .06em; line-height: 1.05; }
+.stock-hero .hero-lead { margin: 18px 0 10px; }
+.stock-maj { margin: 0; font-size: .85rem; color: var(--bronze); letter-spacing: .04em; }
+
+.stock-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; position: relative; }
+.sum {
+  padding: 16px 18px; border-radius: 18px; background: var(--panneau-2); border: 1px solid var(--ligne);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sum strong { font-weight: 300; font-size: 2.2rem; line-height: 1; }
+.sum span { font-size: .8rem; color: var(--sable); }
+.sum.ok strong { color: var(--ok); }
+.sum.bas strong { color: var(--bas); }
+.sum.rupture strong { color: var(--rupture); }
+
+.stock-section { padding-top: 10px; }
+.page-stocks .toolbar { top: 71px; }
+.draft-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px;
+  padding: 14px 18px; margin: 4px 0 16px; border-radius: 16px;
+  background: rgba(201, 165, 107, .08); border: 1px solid rgba(201, 165, 107, .4);
+}
+.draft-bar[hidden] { display: none; }
+.draft-bar p { margin: 0; font-size: .88rem; color: var(--sable); max-width: 640px; }
+.draft-bar strong { color: var(--bronze-clair); font-weight: 500; }
+.draft-bar code { color: var(--parian); background: var(--panneau-3); padding: 1px 6px; border-radius: 6px; }
+.draft-actions { display: flex; gap: 10px; }
+.stock-actions { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+
+.stock-cat { padding: 22px 0 8px; }
+.stock-cat h3 { margin: 0 0 14px; font-weight: 300; font-size: 1.45rem; letter-spacing: .05em; display: flex; align-items: baseline; gap: 10px; }
+.stock-cat h3 small { font-size: .78rem; color: var(--sable); }
+.stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.editing .stock-grid { grid-template-columns: repeat(auto-fill, minmax(390px, 1fr)); }
+
+.stock-card {
+  display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 14px;
+  padding: 12px 16px 12px 12px; border-radius: 18px;
+  background: var(--panneau-2); border: 1px solid var(--ligne); border-left: 3px solid var(--ok);
+  transition: background .2s;
+}
+.stock-card:hover { background: var(--panneau-3); }
+.stock-card.bas { border-left-color: var(--bas); }
+.stock-card.rupture { border-left-color: var(--rupture); }
+.stock-card.changed { box-shadow: inset 0 0 0 1px rgba(201, 165, 107, .5); }
+.stock-icon {
+  width: 64px; height: 64px; border-radius: 14px; position: relative;
+  background: radial-gradient(circle, rgba(236, 226, 207, .08), transparent 70%);
+}
+.stock-icon img { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); object-fit: contain; }
+.stock-icon .ph { position: absolute; inset: 18px; border-radius: 50%; border: 1px dashed var(--ligne-forte); }
+.stock-info { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.stock-name { font-weight: 400; font-size: .98rem; line-height: 1.25; }
+.chip { align-self: flex-start; white-space: nowrap; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.chip.ok { color: var(--ok); }
+.chip.bas { color: var(--bas); }
+.chip.rupture { color: var(--rupture); }
+.bar { height: 3px; border-radius: 3px; background: var(--panneau-3); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--ok); border-radius: 3px; }
+.bas .bar i { background: var(--bas); }
+.rupture .bar i { background: var(--rupture); }
+.stock-seuil { font-size: .72rem; color: var(--sable); }
+.stock-qty { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+.stock-qty strong { font-weight: 300; font-size: 1.9rem; line-height: 1; }
+.stock-qty small { font-size: .7rem; color: var(--sable); }
+.rupture .stock-qty strong { color: var(--rupture); }
+.qty-edit { display: flex; align-items: center; gap: 6px; }
+.qty-edit button {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+  font: 400 1rem/1 var(--font); color: var(--parian); background: none; border: 1px solid var(--ligne-forte);
+}
+.qty-edit button:hover { border-color: var(--bronze); color: var(--bronze-clair); }
+.qty-edit input {
+  width: 64px; padding: 6px 4px; text-align: center; border-radius: 10px;
+  font: 400 1rem var(--font); color: var(--parian); background: var(--panneau); border: 1px solid var(--ligne-forte);
+  -moz-appearance: textfield;
+}
+.qty-edit input::-webkit-outer-spin-button, .qty-edit input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty-edit input:focus { outline: none; border-color: var(--bronze); }
+
+@media (max-width: 900px) {
+  .stock-hero { grid-template-columns: 1fr; align-items: start; }
+  .page-stocks .burger { margin-left: auto; }
+}
+@media (max-width: 640px) {
+  .stock-summary { grid-template-columns: repeat(2, 1fr); }
+  .sum strong { font-size: 1.7rem; }
+  .stock-grid, .editing .stock-grid { grid-template-columns: 1fr; }
+  .stock-card { grid-template-columns: 52px 1fr auto; gap: 10px; }
+  .stock-icon { width: 52px; height: 52px; }
+  .stock-actions { justify-content: stretch; }
+  .stock-actions .btn-ghost { width: 100%; }
+  .qty-edit input { width: 52px; }
+}
+
+/* =====================================================================
    RESPONSIVE
    ===================================================================== */
 @media (max-width: 1100px) {

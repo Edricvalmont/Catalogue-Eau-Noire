@@ -15,6 +15,22 @@ DATA.JS EST COMPATIBLE AVEC LE CATALOGUE D'EDRIC
   d'un site à l'autre. Ne copie pas le bas du fichier (BOUTIQUE / COMMUNAUTE),
   il est propre à chaque site.
 
+PAGE DES STOCKS (stocks.html)
+  stocks.js       -> quantités et seuils de chaque matériau (minerais, lingots,
+                     ferraille dwemer, cuirs et peaux, combustibles, rares)
+  stocks-page.js  -> fonctionnement de la page
+  images/materiaux/ -> icônes des matériaux
+
+  Mettre à jour l'inventaire :
+    1. Ouvre la page Stocks, active « Modifier »
+    2. Ajuste les quantités (+ / − ou en tapant le nombre)
+    3. Clique « Exporter stocks.js » : un fichier est téléchargé
+    4. Remplace stocks.js dans le dossier du site par ce fichier
+    5. git add . / git commit -m "Stocks" / git push
+  Les modifications non exportées restent seulement dans ton navigateur.
+  « Copier la liste de réapprovisionnement » donne un texte prêt à coller
+  (ruptures et stocks bas) pour Discord ou le chat du jeu.
+
 TEXTES DE LA COMMUNAUTÉ
   En bas de data.js : BOUTIQUE (nom, sous-titre, accroche de l'accueil)
   et COMMUNAUTE (paragraphes de présentation, devise, contact).
