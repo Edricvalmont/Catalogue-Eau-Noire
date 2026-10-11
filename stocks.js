@@ -13,7 +13,7 @@
 
 /* Adresse de la feuille Google partagée (voir LISEZMOI.txt, « Stocks en direct »).
    Laisse "" pour fonctionner sans : la page lit alors simplement ce fichier. */
-const STOCKS_EN_LIGNE = "";
+const STOCKS_EN_LIGNE = "https://script.google.com/macros/s/AKfycbwZKThlajZswQFDtlLN1ree_nrSDyv_VTB1_kS4Qrk_NBC56r-hz5XdgmRr-qKrOGTr8w/exec";
 
 const STOCKS = {
   maj: "2026-10-11",   // date de la dernière mise à jour (AAAA-MM-JJ)
