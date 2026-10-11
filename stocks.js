@@ -68,6 +68,9 @@ const STOCKS = {
     { nom: "Combustibles et matériaux rares", items: [
       { id: "bois-de-chauffage",                   nom: "Bois de chauffage",                   qte: 0, seuil: 20 },
       { id: "charbon",                             nom: "Charbon",                             qte: 0, seuil: 20 },
+      { id: "charbon-pauvre",                      nom: "Charbon pauvre",                      qte: 0, seuil: 20, img: "charbon.webp" },
+      { id: "briquette-de-charbon",                nom: "Briquette de charbon",                qte: 0, seuil: 20, img: "charbon.webp" },
+      { id: "coke",                                nom: "Coke",                                qte: 0, seuil: 10, img: "charbon.webp" },
       { id: "os-de-dragon",                        nom: "Os de dragon",                        qte: 0, seuil: 2 },
       { id: "ecailles-de-dragon",                  nom: "Écailles de dragon",                  qte: 0, seuil: 2 },
       { id: "coeur-de-daedra",                     nom: "Cœur de daedra",                      qte: 0, seuil: 2 },
