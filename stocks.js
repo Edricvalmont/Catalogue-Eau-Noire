@@ -11,6 +11,10 @@
    ce fichier par celui téléchargé et publiez (git add / commit / push).
    ===================================================================== */
 
+/* Adresse de la feuille Google partagée (voir LISEZMOI.txt, « Stocks en direct »).
+   Laisse "" pour fonctionner sans : la page lit alors simplement ce fichier. */
+const STOCKS_EN_LIGNE = "";
+
 const STOCKS = {
   maj: "2026-10-11",   // date de la dernière mise à jour (AAAA-MM-JJ)
   par: "",             // (optionnel) qui a fait l'inventaire

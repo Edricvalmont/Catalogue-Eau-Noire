@@ -362,8 +362,7 @@ const COMMUNAUTE = {
   paragraphes: [
     "L'Eau Noire rassemble des Brétons venus de Hauteroche et installés en Bordeciel. Une communauté soudée, fidèle à ses origines, où se mêlent l'honneur de la chevalerie et la maîtrise des arts magiques.",
     "Notre forge sert d'abord les nôtres, mais elle est ouverte à tous ceux qui cherchent un travail soigné : armes, armures, outils et réparations, chaque pièce est façonnée et contrôlée par un forgeron de la communauté.",
-    "Passez commande par le devis du site, puis transmettez-le à l'un de nos forgerons en jeu.",
   ],
-  devise: "Le fer se plie, l'Eau Noire demeure.",
+  devise: "Le métal se plie, l'Eau Noire demeure.",
   contact: "Contact en jeu : demandez un forgeron de l'Eau Noire.",
 };

@@ -1,7 +1,11 @@
 /* =====================================================================
    L'EAU NOIRE — PAGE DES STOCKS
-   Affiche stocks.js, signale les ruptures et stocks bas, permet de
-   modifier les quantités et d'exporter un nouveau stocks.js.
+   Deux modes :
+   - EN DIRECT (STOCKS_EN_LIGNE renseigné dans stocks.js) : les quantités
+     sont lues et enregistrées dans une feuille Google partagée. Les
+     forgerons modifient directement sur le site avec un mot de passe.
+   - FICHIER (STOCKS_EN_LIGNE vide) : la page lit stocks.js ; les
+     modifications s'exportent dans un nouveau stocks.js à publier.
    ===================================================================== */
 (function () {
   const $ = s => document.querySelector(s);
@@ -13,24 +17,43 @@
     del(k) { try { localStorage.removeItem("eaunoire-" + k); } catch (e) {} },
   };
 
-  // Brouillon local : { id: nouvelleQuantité } — ignoré si stocks.js a été republié depuis
-  let draft = store.get("stock-draft", null);
-  if (!draft || draft.maj !== STOCKS.maj) draft = { maj: STOCKS.maj, qte: {} };
+  const API = (typeof STOCKS_EN_LIGNE === "string" && STOCKS_EN_LIGNE.trim()) || "";
+  const ONLINE = !!API;
 
+  /* ---------- Données ---------- */
   const ALL = [];
   STOCKS.categories.forEach(c => c.items.forEach(it => { it._cat = c.nom; it._search = norm(it.nom + " " + c.nom); ALL.push(it); }));
+  const byId = Object.fromEntries(ALL.map(it => [it.id, it]));
 
-  const qte = it => (draft.qte[it.id] ?? it.qte);
+  // Quantités « officielles » : feuille Google en direct, sinon stocks.js
+  let serveur = null;            // { qte: {...}, maj, par }
+  let etatConnexion = ONLINE ? "chargement" : "fichier";
+  const base = it => (serveur && serveur.qte[it.id] != null ? serveur.qte[it.id] : it.qte);
+
+  // Brouillon local des modifications non enregistrées
+  const draftKey = ONLINE ? "online" : STOCKS.maj;
+  let draft = store.get("stock-draft", null);
+  if (!draft || draft.maj !== draftKey) draft = { maj: draftKey, qte: {} };
+  const qte = it => (draft.qte[it.id] ?? base(it));
+  const changedIds = () => Object.keys(draft.qte).filter(id => byId[id] && draft.qte[id] !== base(byId[id]));
+
   const etat = it => qte(it) <= 0 ? "rupture" : qte(it) < it.seuil ? "bas" : "ok";
   const LABEL = { rupture: "Rupture", bas: "Stock bas", ok: "Disponible" };
 
-  let cat = "Tout";
-  let alertOnly = false;
-  let editMode = false;
+  let cat = "Tout", alertOnly = false, editMode = false, saving = false, message = "";
 
-  /* ---------- Date ---------- */
-  const fmtDate = d => { const x = new Date(d + "T12:00:00"); return isNaN(x) ? d : x.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); };
-  $("#stock-maj").textContent = "Inventaire du " + fmtDate(STOCKS.maj) + (STOCKS.par ? " · par " + STOCKS.par : "");
+  /* ---------- Dates ---------- */
+  const fmtDate = d => { const x = new Date(/T/.test(d) ? d : d + "T12:00:00"); return isNaN(x) ? d : x.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); };
+  const fmtDateHeure = d => { const x = new Date(d); return isNaN(x) ? d : x.toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); };
+  function renderStatus() {
+    let t;
+    if (etatConnexion === "chargement") t = "Connexion aux stocks en direct…";
+    else if (etatConnexion === "direct") t = "● En direct" + (serveur.maj ? " · modifié le " + fmtDateHeure(serveur.maj) : "") + (serveur.par ? " par " + serveur.par : "");
+    else if (etatConnexion === "erreur") t = "Stocks en direct injoignables : affichage du dernier inventaire publié (" + fmtDate(STOCKS.maj) + ")";
+    else t = "Inventaire du " + fmtDate(STOCKS.maj) + (STOCKS.par ? " · par " + STOCKS.par : "");
+    $("#stock-maj").textContent = t;
+    $("#stock-maj").classList.toggle("live", etatConnexion === "direct");
+  }
 
   /* ---------- Onglets ---------- */
   ["Tout", ...STOCKS.categories.map(c => c.nom)].forEach(c => {
@@ -52,6 +75,33 @@
       <div class="sum rupture"><strong>${n.rupture}</strong><span>en rupture</span></div>`;
   }
 
+  /* ---------- Bandeau des modifications ---------- */
+  function renderDraftBar() {
+    const n = changedIds().length;
+    const bar = $("#draft-bar");
+    bar.hidden = !n && !message;
+    if (bar.hidden) return;
+    if (!n) { bar.innerHTML = `<p class="draft-ok">${esc(message)}</p>`; return; }
+    if (ONLINE && etatConnexion === "direct") {
+      bar.innerHTML = `
+        <p><strong>${n} modification${n > 1 ? "s" : ""} à enregistrer.</strong> Elles seront visibles par tous dès l'enregistrement.
+          ${message ? `<span class="draft-err">${esc(message)}</span>` : ""}</p>
+        <div class="draft-form">
+          <input id="f-nom" type="text" placeholder="Votre nom" value="${esc(store.get("nom", ""))}" autocomplete="nickname">
+          <input id="f-mdp" type="password" placeholder="Mot de passe" value="${esc(store.get("mdp", ""))}" autocomplete="current-password">
+          <button class="btn-ghost" id="draft-reset" type="button">Annuler</button>
+          <button class="btn" id="draft-save" type="button" ${saving ? "disabled" : ""}>${saving ? "Enregistrement…" : "Enregistrer"}</button>
+        </div>`;
+    } else {
+      bar.innerHTML = `
+        <p><strong>${n} modification${n > 1 ? "s" : ""} non publiée${n > 1 ? "s" : ""}.</strong> Elles ne sont enregistrées que dans ce navigateur. Exportez <code>stocks.js</code> puis publiez-le pour que tout le monde les voie.</p>
+        <div class="draft-actions">
+          <button class="btn-ghost" id="draft-reset" type="button">Annuler</button>
+          <button class="btn" id="draft-export" type="button">Exporter stocks.js</button>
+        </div>`;
+    }
+  }
+
   /* ---------- Liste ---------- */
   function render() {
     const words = norm($("#search").value).split(/\s+/).filter(Boolean);
@@ -62,7 +112,7 @@
       if (!items.length) return;
       html += `<div class="stock-cat"><h3>${esc(c.nom)} <small>${items.length}</small></h3><div class="stock-grid">
         ${items.map(it => {
-          const q = qte(it), e = etat(it), changed = draft.qte[it.id] != null && draft.qte[it.id] !== it.qte;
+          const q = qte(it), e = etat(it), changed = draft.qte[it.id] != null && draft.qte[it.id] !== base(it);
           const pct = Math.min(100, Math.round(q / Math.max(1, it.seuil * 2) * 100));
           const src = "images/materiaux/" + (it.img || it.id + ".webp");
           return `<div class="stock-card ${e}${changed ? " changed" : ""}">
@@ -71,7 +121,7 @@
               <span class="stock-name">${esc(it.nom)}</span>
               <span class="chip ${e}">${LABEL[e]}</span>
               <div class="bar"><i style="width:${pct}%"></i></div>
-              <span class="stock-seuil">Seuil : ${it.seuil}</span>
+              <span class="stock-seuil">Seuil : ${it.seuil}${changed ? ` · avant : ${base(it)}` : ""}</span>
             </div>
             <div class="stock-qty">
               ${editMode ? `<div class="qty-edit">
@@ -87,30 +137,87 @@
     $("#stock-list").classList.toggle("editing", editMode);
     $("#stock-list").innerHTML = html || '<p class="empty">Aucun matériau ne correspond.</p>';
     renderSummary();
-    $("#draft-bar").hidden = !Object.keys(draft.qte).some(id => draft.qte[id] !== ALL.find(i => i.id === id)?.qte);
+    renderDraftBar();
+    renderStatus();
   }
 
   /* ---------- Modification ---------- */
   function setQty(id, v) {
-    const it = ALL.find(i => i.id === id); if (!it) return;
+    const it = byId[id]; if (!it) return;
     v = Math.max(0, Math.round(Number(v) || 0));
-    if (v === it.qte) delete draft.qte[id]; else draft.qte[id] = v;
+    if (v === base(it)) delete draft.qte[id]; else draft.qte[id] = v;
+    message = "";
     store.set("stock-draft", draft);
   }
+  function resetDraft() { draft = { maj: draftKey, qte: {} }; store.del("stock-draft"); message = ""; render(); }
+
   document.addEventListener("click", e => {
     const b = e.target.closest(".qty-edit button");
-    if (b) { const id = b.dataset.id; const it = ALL.find(i => i.id === id); setQty(id, qte(it) + (+b.dataset.d)); render(); }
+    if (b) { setQty(b.dataset.id, qte(byId[b.dataset.id]) + (+b.dataset.d)); render(); return; }
+    if (e.target.closest("#draft-reset")) { resetDraft(); return; }
+    if (e.target.closest("#draft-export")) { exporter(); return; }
+    if (e.target.closest("#draft-save")) { enregistrer(); return; }
   });
   document.addEventListener("change", e => {
     if (e.target.matches(".qty-edit input")) { setQty(e.target.dataset.id, e.target.value); render(); }
+    if (e.target.id === "f-nom") store.set("nom", e.target.value.trim());
+    if (e.target.id === "f-mdp") store.set("mdp", e.target.value);
   });
   $("#t-edit").onchange = e => { editMode = e.target.checked; render(); };
   $("#t-alert").onchange = e => { alertOnly = e.target.checked; render(); };
   $("#search").addEventListener("input", render);
-  $("#draft-reset").onclick = () => { draft = { maj: STOCKS.maj, qte: {} }; store.del("stock-draft"); render(); };
 
-  /* ---------- Export du nouveau stocks.js ---------- */
-  $("#draft-export").onclick = () => {
+  /* ---------- Mode EN DIRECT : lecture et enregistrement ---------- */
+  async function charger() {
+    try {
+      const r = await fetch(API + (API.includes("?") ? "&" : "?") + "t=" + Date.now());
+      const d = await r.json();
+      if (!d || typeof d.qte !== "object") throw new Error("Réponse inattendue");
+      serveur = d; etatConnexion = "direct";
+    } catch (err) {
+      if (!serveur) etatConnexion = "erreur";
+    }
+    // Retire du brouillon ce qui correspond déjà aux quantités officielles
+    Object.keys(draft.qte).forEach(id => { if (byId[id] && draft.qte[id] === base(byId[id])) delete draft.qte[id]; });
+    render();
+  }
+
+  async function enregistrer() {
+    const nom = ($("#f-nom")?.value || "").trim(), mdp = $("#f-mdp")?.value || "";
+    if (!nom) { message = "Indiquez votre nom (il apparaît dans l'historique)."; render(); $("#f-nom")?.focus(); return; }
+    if (!mdp) { message = "Indiquez le mot de passe de la forge."; render(); $("#f-mdp")?.focus(); return; }
+    store.set("nom", nom); store.set("mdp", mdp);
+    const changements = {};
+    changedIds().forEach(id => changements[id] = { qte: draft.qte[id], nom: byId[id].nom });
+    saving = true; message = ""; render();
+    try {
+      // Envoi en texte brut : évite le blocage CORS des scripts Google
+      const r = await fetch(API, { method: "POST", body: JSON.stringify({ motDePasse: mdp, nom, changements }) });
+      const d = await r.json();
+      if (d.erreur) {
+        message = d.erreur;
+        if (/mot de passe/i.test(d.erreur)) store.del("mdp");
+      } else {
+        serveur = d; etatConnexion = "direct";
+        draft = { maj: draftKey, qte: {} }; store.del("stock-draft");
+        message = "Stocks enregistrés. Merci " + nom + " !";
+        setTimeout(() => { if (message.startsWith("Stocks enregistrés")) { message = ""; render(); } }, 4000);
+      }
+    } catch (err) {
+      message = "Impossible de joindre les stocks en direct. Vos modifications sont conservées, réessayez.";
+    }
+    saving = false; render();
+  }
+
+  if (ONLINE) {
+    charger();
+    // Rafraîchit quand on revient sur l'onglet et toutes les 60 s (si on ne modifie rien)
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && !changedIds().length) charger(); });
+    setInterval(() => { if (!document.hidden && !changedIds().length && !saving) charger(); }, 60000);
+  }
+
+  /* ---------- Mode FICHIER : export d'un nouveau stocks.js ---------- */
+  function exporter() {
     const today = new Date().toISOString().slice(0, 10);
     const pad = (s, n) => s + " ".repeat(Math.max(1, n - s.length));
     const body = STOCKS.categories.map(c => `    { nom: ${JSON.stringify(c.nom)}, items: [\n` +
@@ -129,6 +236,10 @@
    ce fichier par celui téléchargé et publiez (git add / commit / push).
    ===================================================================== */
 
+/* Adresse de la feuille Google partagée (voir LISEZMOI.txt, « Stocks en direct »).
+   Laisse "" pour fonctionner sans : la page lit alors simplement ce fichier. */
+const STOCKS_EN_LIGNE = ${JSON.stringify(API)};
+
 const STOCKS = {
   maj: "${today}",   // date de la dernière mise à jour (AAAA-MM-JJ)
   par: ${JSON.stringify(STOCKS.par || "")},             // (optionnel) qui a fait l'inventaire
@@ -141,12 +252,13 @@ ${body}
     a.href = URL.createObjectURL(new Blob([file], { type: "text/javascript" }));
     a.download = "stocks.js"; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  };
+  }
 
   /* ---------- Liste de réapprovisionnement à copier ---------- */
   $("#report-copy").onclick = async () => {
     const r = ALL.filter(it => etat(it) === "rupture"), b = ALL.filter(it => etat(it) === "bas");
-    const txt = [`Réapprovisionnement — Forge de l'Eau Noire (${fmtDate(STOCKS.maj)})`,
+    const date = serveur && serveur.maj ? fmtDate(serveur.maj) : fmtDate(STOCKS.maj);
+    const txt = [`Réapprovisionnement — Forge de l'Eau Noire (${date})`,
       r.length ? "En rupture :\n" + r.map(it => `- ${it.nom} (objectif ${it.seuil})`).join("\n") : "",
       b.length ? "Stock bas :\n" + b.map(it => `- ${it.nom} : ${qte(it)} / ${it.seuil}`).join("\n") : "",
       !r.length && !b.length ? "Tous les stocks sont au-dessus de leur seuil." : ""].filter(Boolean).join("\n\n");

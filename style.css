@@ -367,6 +367,17 @@ img { max-width: 100%; }
 .draft-bar strong { color: var(--bronze-clair); font-weight: 500; }
 .draft-bar code { color: var(--parian); background: var(--panneau-3); padding: 1px 6px; border-radius: 6px; }
 .draft-actions { display: flex; gap: 10px; }
+.stock-maj.live { color: #8fbf8a; }
+.draft-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.draft-form input {
+  background: var(--panneau-3); border: 1px solid rgba(255,255,255,.08); color: var(--parian);
+  font: inherit; font-size: .88rem; padding: 9px 14px; border-radius: 999px; width: 170px;
+}
+.draft-form input:focus { outline: none; border-color: var(--bronze); }
+.draft-form .btn[disabled] { opacity: .6; cursor: wait; }
+.draft-err { display: block; margin-top: 6px; color: #e08a7a; }
+.draft-bar p.draft-ok { color: #8fbf8a; }
+@media (max-width: 640px) { .draft-form input { flex: 1 1 140px; width: auto; } }
 .stock-actions { display: flex; justify-content: flex-end; margin-bottom: 8px; }
 
 .stock-cat { padding: 22px 0 8px; }
