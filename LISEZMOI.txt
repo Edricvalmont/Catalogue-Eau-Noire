@@ -1,0 +1,30 @@
+SITE DE LA FORGE DE L'EAU NOIRE — MODE D'EMPLOI
+================================================
+
+FICHIERS
+  index.html  -> la structure de la page (double-clic pour l'ouvrir)
+  style.css   -> l'apparence (couleurs en haut du fichier, mobile en bas)
+  script.js   -> le fonctionnement (catalogue, filtres, licences, devis)
+  data.js     -> TOUT le contenu : objets, prix, recettes, licences,
+                 et les textes de la communauté (bloc COMMUNAUTE en bas).
+                 C'est le seul fichier à modifier au quotidien.
+  images/     -> vignettes des objets, aperçus portés, images de l'accueil
+
+DATA.JS EST COMPATIBLE AVEC LE CATALOGUE D'EDRIC
+  Le bloc CATALOGUE a exactement le même format : tu peux copier un groupe
+  d'un site à l'autre. Ne copie pas le bas du fichier (BOUTIQUE / COMMUNAUTE),
+  il est propre à chaque site.
+
+TEXTES DE LA COMMUNAUTÉ
+  En bas de data.js : BOUTIQUE (nom, sous-titre, accroche de l'accueil)
+  et COMMUNAUTE (paragraphes de présentation, devise, contact).
+
+IMAGES
+  Objet       : images/<groupe>-<objet>.webp   (ex. armes-en-fer-epee.webp)
+  Aperçu porté: images/apercu-<groupe>.webp    (ex. apercu-bosmer.webp)
+  Accueil     : images/hero-forgeron.webp (cercle) et images/atelier.webp
+  La liste complète est dans images/_noms-des-images.txt
+
+METTRE EN LIGNE (GitHub Pages)
+  Même méthode que pour le catalogue d'Edric : nouveau dépôt, git push,
+  puis Settings > Pages > branche main, dossier / (root).

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c0c0d">
+<title>L'Eau Noire — Forge bretonne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Grand titre décoratif derrière le cadre -->
+<div class="backdrop-title" aria-hidden="true">Eau Noire</div>
+
+<div class="frame">
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <header class="nav">
+    <a class="brand" href="#accueil">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong id="brand-name">L'Eau Noire</strong><small id="brand-sub"></small></span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="#accueil" class="active">Accueil</a>
+      <a href="#communaute">La communauté</a>
+      <a href="#catalogue">Catalogue</a>
+      <a href="#licences">Licences</a>
+    </nav>
+    <button class="devis-btn" id="devis-open" type="button">Devis <span id="devis-count">0</span></button>
+    <button class="burger" id="burger" type="button" aria-label="Menu"><span></span><span></span></button>
+  </header>
+
+  <!-- Points décoratifs à gauche -->
+  <div class="side-dots" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i></div>
+
+  <!-- ===================== ACCUEIL ===================== -->
+  <section class="hero" id="accueil">
+    <div class="hero-text">
+      <p class="eyebrow">Forge de Hauteroche · Bordeciel</p>
+      <h1 id="hero-title">L'Eau<br>Noire</h1>
+      <p class="hero-lead" id="hero-lead"></p>
+      <div class="hero-actions">
+        <a class="btn" href="#catalogue">Voir le catalogue</a>
+        <a class="btn-ghost" href="#communaute">La communauté</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="ring ring-outer"></div>
+      <div class="ring ring-mid"></div>
+      <div class="orbit"><i></i></div>
+      <div class="hero-circle"><img src="images/hero-forgeron.webp" alt=""></div>
+    </div>
+  </section>
+
+  <!-- ===================== COMMUNAUTÉ ===================== -->
+  <section class="about" id="communaute">
+    <div class="about-text">
+      <h2 id="about-title">La communauté</h2>
+      <div id="about-body"></div>
+      <p class="devise" id="about-devise"></p>
+      <a class="btn-ghost" href="#catalogue">Passer commande</a>
+    </div>
+    <figure class="about-art">
+      <img src="images/atelier.webp" alt="Un forgeron breton au travail sur l'enclume">
+    </figure>
+  </section>
+
+  <!-- ===================== CATALOGUE ===================== -->
+  <section class="catalogue" id="catalogue">
+    <div class="section-head">
+      <h2>Catalogue</h2>
+      <p>Armes, armures, outils et réparations. Cliquez sur <strong>+</strong> pour ajouter un objet au devis.</p>
+    </div>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Rechercher… (touche /)" autocomplete="off">
+      <div class="tabs" id="tabs"></div>
+      <div class="toggles">
+        <label class="switch"><input type="checkbox" id="t-lic"><span></span>Sous licence</label>
+        <label class="switch"><input type="checkbox" id="t-mat"><span></span>Recettes</label>
+      </div>
+    </div>
+
+    <div id="list"></div>
+  </section>
+
+  <!-- ===================== LICENCES ===================== -->
+  <section class="licences" id="licences">
+    <div class="section-head">
+      <h2>Licences</h2>
+      <p>Certains équipements ne peuvent être fabriqués ou portés sans licence délivrée par l'autorité compétente.</p>
+    </div>
+    <div id="lic-content"></div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-devise" id="footer-devise"></p>
+    <p class="footer-contact" id="footer-contact"></p>
+  </footer>
+</div>
+
+<!-- ===================== DEVIS (tiroir) ===================== -->
+<div class="drawer-shade" id="drawer-shade"></div>
+<aside class="drawer" id="drawer" aria-label="Devis">
+  <header>
+    <h3>Devis</h3>
+    <button class="drawer-close" id="devis-close" type="button" aria-label="Fermer">×</button>
+  </header>
+  <div class="drawer-body" id="devis-body"></div>
+  <footer>
+    <div class="drawer-total"><span>Total</span><strong id="devis-total">0 septims</strong></div>
+    <div class="drawer-actions">
+      <button class="btn-ghost" id="devis-clear" type="button">Vider</button>
+      <button class="btn" id="devis-copy" type="button">Copier le devis</button>
+    </div>
+  </footer>
+</aside>
+
+<div id="lightbox"><img alt=""></div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
