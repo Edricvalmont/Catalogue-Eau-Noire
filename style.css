@@ -410,6 +410,8 @@ img { max-width: 100%; }
 .chip.ok { color: var(--ok); }
 .chip.bas { color: var(--bas); }
 .chip.rupture { color: var(--rupture); }
+.chip.vide { color: var(--sable); opacity: .8; }
+.stock-card.vide { opacity: .75; }
 .bar { height: 3px; border-radius: 3px; background: var(--panneau-3); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ok); border-radius: 3px; }
 .bas .bar i { background: var(--bas); }

@@ -37,8 +37,10 @@
   const qte = it => (draft.qte[it.id] ?? base(it));
   const changedIds = () => Object.keys(draft.qte).filter(id => byId[id] && draft.qte[id] !== base(byId[id]));
 
-  const etat = it => qte(it) <= 0 ? "rupture" : qte(it) < it.seuil ? "bas" : "ok";
-  const LABEL = { rupture: "Rupture", bas: "Stock bas", ok: "Disponible" };
+  // Seuil à 0 : aucun minimum requis, le matériau ne déclenche jamais d'alerte.
+  const etat = it => it.seuil <= 0 ? (qte(it) > 0 ? "ok" : "vide") : qte(it) <= 0 ? "rupture" : qte(it) < it.seuil ? "bas" : "ok";
+  const LABEL = { rupture: "Rupture", bas: "Stock bas", ok: "Disponible", vide: "Non requis" };
+  const nb = n => Number(n).toLocaleString("fr-FR");
 
   let cat = "Tout", alertOnly = false, editMode = false, saving = false, message = "";
 
@@ -66,7 +68,7 @@
 
   /* ---------- Résumé ---------- */
   function renderSummary() {
-    const n = { rupture: 0, bas: 0, ok: 0 };
+    const n = { rupture: 0, bas: 0, ok: 0, vide: 0 };
     ALL.forEach(it => n[etat(it)]++);
     $("#stock-summary").innerHTML = `
       <div class="sum"><strong>${ALL.length}</strong><span>matériaux suivis</span></div>
@@ -108,7 +110,7 @@
     let html = "";
     STOCKS.categories.forEach(c => {
       if (cat !== "Tout" && c.nom !== cat) return;
-      const items = c.items.filter(it => words.every(w => it._search.includes(w)) && (!alertOnly || etat(it) !== "ok"));
+      const items = c.items.filter(it => words.every(w => it._search.includes(w)) && (!alertOnly || etat(it) === "bas" || etat(it) === "rupture"));
       if (!items.length) return;
       html += `<div class="stock-cat"><h3>${esc(c.nom)} <small>${items.length}</small></h3><div class="stock-grid">
         ${items.map(it => {
@@ -121,14 +123,14 @@
               <span class="stock-name">${esc(it.nom)}</span>
               <span class="chip ${e}">${LABEL[e]}</span>
               <div class="bar"><i style="width:${pct}%"></i></div>
-              <span class="stock-seuil">Seuil : ${it.seuil}${changed ? ` · avant : ${base(it)}` : ""}</span>
+              <span class="stock-seuil">${it.seuil > 0 ? "Seuil : " + nb(it.seuil) : "Pas de seuil"}${changed ? ` · avant : ${nb(base(it))}` : ""}</span>
             </div>
             <div class="stock-qty">
               ${editMode ? `<div class="qty-edit">
                   <button type="button" data-id="${it.id}" data-d="-1" aria-label="Retirer">−</button>
                   <input type="number" min="0" inputmode="numeric" value="${q}" data-id="${it.id}" aria-label="Quantité de ${esc(it.nom)}">
                   <button type="button" data-id="${it.id}" data-d="1" aria-label="Ajouter">+</button>
-                </div>` : `<strong>${q}</strong><small>en stock</small>`}
+                </div>` : `<strong>${nb(q)}</strong><small>en stock</small>`}
             </div>
           </div>`;
         }).join("")}
@@ -228,7 +230,7 @@
    ---------------------------------------------------------------------
    qte   : quantité en stock
    seuil : en dessous de ce nombre, le matériau passe en « stock bas »
-           (à 0 il est « en rupture »)
+           (à 0 il est « en rupture »). Seuil 0 = aucun minimum requis
    img   : (optionnel) autre image que images/materiaux/<id>.webp
 
    Méthode la plus simple : sur la page Stocks, activez « Modifier »,
@@ -259,8 +261,8 @@ ${body}
     const r = ALL.filter(it => etat(it) === "rupture"), b = ALL.filter(it => etat(it) === "bas");
     const date = serveur && serveur.maj ? fmtDate(serveur.maj) : fmtDate(STOCKS.maj);
     const txt = [`Réapprovisionnement — Forge de l'Eau Noire (${date})`,
-      r.length ? "En rupture :\n" + r.map(it => `- ${it.nom} (objectif ${it.seuil})`).join("\n") : "",
-      b.length ? "Stock bas :\n" + b.map(it => `- ${it.nom} : ${qte(it)} / ${it.seuil}`).join("\n") : "",
+      r.length ? "En rupture :\n" + r.map(it => `- ${it.nom} (objectif ${nb(it.seuil)})`).join("\n") : "",
+      b.length ? "Stock bas :\n" + b.map(it => `- ${it.nom} : ${nb(qte(it))} / ${nb(it.seuil)}`).join("\n") : "",
       !r.length && !b.length ? "Tous les stocks sont au-dessus de leur seuil." : ""].filter(Boolean).join("\n\n");
     const btn = $("#report-copy"), old = btn.textContent;
     try { await navigator.clipboard.writeText(txt); btn.textContent = "Copié !"; }
