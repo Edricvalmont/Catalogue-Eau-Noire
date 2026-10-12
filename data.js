@@ -253,39 +253,39 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Orsimer léger", categorie: "Armures légères", licence: "orsimer",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Armure",                mo: null, prix: null },
-    { nom: "Armure (variante)",     mo: null, prix: null },
-    { nom: "Gantelets",             mo: null, prix: null },
-    { nom: "Bottes",                mo: null, prix: null },
-    { nom: "Casque",                mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Armure",                mat: "3 bandes de cuir, 4 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
+    { nom: "Armure (variante)",     mat: "3 bandes de cuir, 4 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
+    { nom: "Gantelets",             mat: "2 bandes de cuir, 2 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
+    { nom: "Bottes",                mat: "2 bandes de cuir, 3 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
+    { nom: "Casque",                mat: "2 bandes de cuir, 2 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
   ]},
 
   { groupe: "Rugged", categorie: "Armures légères",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Armure",                mo: null, prix: null },
-    { nom: "Gantelets",             mo: null, prix: null },
-    { nom: "Bottes",                mo: null, prix: null },
-    { nom: "Casque",                mo: null, prix: null },
-    { nom: "Bouclier",              mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Armure",                mat: "3 bandes de cuir, 4 cuirs", mo: null, prix: null },
+    { nom: "Gantelets",             mat: "2 bandes de cuir, 1 cuir", mo: null, prix: null },
+    { nom: "Bottes",                mat: "2 bandes de cuir, 2 cuirs", mo: null, prix: null },
+    { nom: "Casque",                mat: "1 bande de cuir, 2 cuirs", mo: null, prix: null },
+    { nom: "Bouclier",              mat: "2 bandes de cuir, 4 cuirs", mo: null, prix: null },
   ]},
 
   { groupe: "Peau", categorie: "Armures légères",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Armure",                mo: null, prix: null },
-    { nom: "Armure (variante)",     mo: null, prix: null },
-    { nom: "Gantelets",             mo: null, prix: null },
-    { nom: "Bottes",                mo: null, prix: null },
-    { nom: "Casque",                mo: null, prix: null },
-    { nom: "Bouclier",              mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Armure",                mat: "3 bandes de cuir, 4 cuirs", mo: null, prix: null },
+    { nom: "Armure (variante)",     mat: "3 bandes de cuir, 4 cuirs", mo: null, prix: null },
+    { nom: "Gantelets",             mat: "2 bandes de cuir, 1 cuir", mo: null, prix: null },
+    { nom: "Bottes",                mat: "2 bandes de cuir, 2 cuirs", mo: null, prix: null },
+    { nom: "Casque",                mat: "1 bande de cuir, 2 cuirs", mo: null, prix: null },
+    { nom: "Bouclier",              mat: "2 bandes de cuir, 4 cuirs", mo: null, prix: null },
   ]},
 
   { groupe: "Rogue", categorie: "Armures légères",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Armure",                mo: null, prix: null },
-    { nom: "Gantelets",             mo: null, prix: null },
-    { nom: "Bottes",                mo: null, prix: null },
-    { nom: "Casque",                mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Armure",                mat: "3 bandes de cuir, 4 cuirs", mo: null, prix: null },
+    { nom: "Gantelets",             mat: "2 bandes de cuir, 1 cuir", mo: null, prix: null },
+    { nom: "Bottes",                mat: "2 bandes de cuir, 2 cuirs", mo: null, prix: null },
+    { nom: "Casque",                mat: "1 bande de cuir, 2 cuirs", mo: null, prix: null },
   ]},
 
   { groupe: "Armure de verre", categorie: "Armures légères", licence: "verre",
