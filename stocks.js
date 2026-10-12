@@ -58,7 +58,7 @@ const STOCKS = {
       { id: "peau-de-vache",                       nom: "Peau de vache",                       qte: 0, seuil: 5 },
       { id: "peau-de-chevre",                      nom: "Peau de chèvre",                      qte: 0, seuil: 5 },
       { id: "peau-de-cerf",                        nom: "Peau de cerf",                        qte: 0, seuil: 5 },
-      { id: "peau-de-cheval",                      nom: "Peau de cheval",                      qte: 0, seuil: 5 },
+      { id: "peau-de-chevreuil",                   nom: "Peau de chevreuil",                   qte: 0, seuil: 5, img: "peau-de-cerf.webp" },
       { id: "fourrure-de-loup",                    nom: "Fourrure de loup",                    qte: 0, seuil: 5 },
       { id: "fourrure-de-loup-des-glaces",         nom: "Fourrure de loup des glaces",         qte: 0, seuil: 3 },
       { id: "fourrure-d-ours",                     nom: "Fourrure d'ours",                     qte: 0, seuil: 3 },
@@ -68,6 +68,7 @@ const STOCKS = {
       { id: "fourrure-de-tigre-des-neiges",        nom: "Fourrure de tigre des neiges",        qte: 0, seuil: 3 },
       { id: "fourrure-de-renard",                  nom: "Fourrure de renard",                  qte: 0, seuil: 3 },
       { id: "cuir-de-netch",                       nom: "Cuir de netch",                       qte: 0, seuil: 5 },
+      { id: "morceau-de-lin",                      nom: "Morceau de lin",                      qte: 0, seuil: 10 },
     ]},
     { nom: "Combustibles et matériaux rares", items: [
       { id: "bois-de-chauffage",                   nom: "Bois de chauffage",                   qte: 0, seuil: 20 },
