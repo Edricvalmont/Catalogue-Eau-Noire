@@ -40,26 +40,26 @@ const CATALOGUE = [
 
   { groupe: "Armes en fer", categorie: "Armes", items: [
     { nom: "Arc",               mo: 4,  prix: 21 },
-    { nom: "Flèches x80",       mo: 2,  prix: 16 },
-    { nom: "Dague",             mo: 3,  prix: 19 },
-    { nom: "Épée",              mo: 4,  prix: 25 },
-    { nom: "Hache",             mo: 5,  prix: 26 },
-    { nom: "Masse",             mo: 6,  prix: 32 },
-    { nom: "Espadon",           mo: 8,  prix: 38 },
-    { nom: "Hache d'arme",      mo: 8,  prix: 38 },
-    { nom: "Marteau de guerre", mo: 10, prix: 39 },
+    { nom: "Flèches x80",       mat: "1 lingot de fer, 1 bois de chauffage (24 flèches)", mo: 2,  prix: 16 },
+    { nom: "Dague",             mat: "1 bande de cuir, 1 lingot de fer", mo: 3,  prix: 19 },
+    { nom: "Épée",              mat: "1 bande de cuir, 2 lingots de fer", mo: 4,  prix: 25 },
+    { nom: "Hache",             mat: "2 bandes de cuir, 2 lingots de fer", mo: 5,  prix: 26 },
+    { nom: "Masse",             mat: "2 bandes de cuir, 3 lingots de fer", mo: 6,  prix: 32 },
+    { nom: "Espadon",           mat: "2 bandes de cuir, 4 lingots de fer", mo: 8,  prix: 38 },
+    { nom: "Hache d'arme",      mat: "2 bandes de cuir, 4 lingots de fer", mo: 8,  prix: 38 },
+    { nom: "Marteau de guerre", mat: "3 bandes de cuir, 4 lingots de fer", mo: 10, prix: 39 },
   ]},
 
   { groupe: "Armes en acier", categorie: "Armes", items: [
     { nom: "Arc",               mo: 8,  prix: 40 },
-    { nom: "Flèches x80",       mo: 3,  prix: 20 },
-    { nom: "Dague",             mo: 5,  prix: 28 },
-    { nom: "Épée",              mo: 6,  prix: 37 },
-    { nom: "Hache",             mo: 8,  prix: 39 },
-    { nom: "Masse",             mo: 9,  prix: 47 },
-    { nom: "Espadon",           mo: 12, prix: 65 },
-    { nom: "Hache d'arme",      mo: 11, prix: 59 },
-    { nom: "Marteau de guerre", mo: 11, prix: 59 },
+    { nom: "Flèches x80",       mat: "1 lingot d'acier, 1 bois de chauffage (24 flèches)", mo: 3,  prix: 20 },
+    { nom: "Dague",             mat: "1 bande de cuir, 1 lingot de fer, 1 lingot d'acier", mo: 5,  prix: 28 },
+    { nom: "Épée",              mat: "1 bande de cuir, 1 lingot de fer, 2 lingots d'acier", mo: 6,  prix: 37 },
+    { nom: "Hache",             mat: "2 bandes de cuir, 1 lingot de fer, 2 lingots d'acier", mo: 8,  prix: 39 },
+    { nom: "Masse",             mat: "1 bande de cuir, 1 lingot de fer, 3 lingots d'acier", mo: 9,  prix: 47 },
+    { nom: "Espadon",           mat: "3 bandes de cuir, 2 lingots de fer, 4 lingots d'acier", mo: 12, prix: 65 },
+    { nom: "Hache d'arme",      mat: "2 bandes de cuir, 1 lingot de fer, 4 lingots d'acier", mo: 11, prix: 59 },
+    { nom: "Marteau de guerre", mat: "3 bandes de cuir, 1 lingot de fer, 4 lingots d'acier", mo: 11, prix: 59 },
   ]},
 
   { groupe: "Armes communes", categorie: "Armes", items: [
@@ -73,29 +73,29 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Armes en verre", categorie: "Armes", licence: "verre",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Arc",               mo: null, prix: null },
-    { nom: "Flèches x80",       mo: null, prix: null },
-    { nom: "Dague",             mo: null, prix: null },
-    { nom: "Épée",              mo: null, prix: null },
-    { nom: "Hache",             mo: null, prix: null },
-    { nom: "Masse",             mo: null, prix: null },
-    { nom: "Espadon",           mo: null, prix: null },
-    { nom: "Hache d'arme",      mo: null, prix: null },
-    { nom: "Marteau de guerre", mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Arc",               mat: "2 malachites raffinées, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Flèches x80",       mat: "1 malachite raffinée, 1 bois de chauffage (24 flèches)", mo: null, prix: null },
+    { nom: "Dague",             mat: "1 bande de cuir, 1 malachite raffinée, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Épée",              mat: "1 bande de cuir, 1 malachite raffinée, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Hache",             mat: "2 bandes de cuir, 1 malachite raffinée, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Masse",             mat: "1 bande de cuir, 2 malachites raffinées, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Espadon",           mat: "3 bandes de cuir, 2 malachites raffinées, 2 pierres de lune raffinées", mo: null, prix: null },
+    { nom: "Hache d'arme",      mat: "2 bandes de cuir, 2 malachites raffinées, 2 pierres de lune raffinées", mo: null, prix: null },
+    { nom: "Marteau de guerre", mat: "3 bandes de cuir, 3 malachites raffinées, 2 pierres de lune raffinées", mo: null, prix: null },
   ]},
 
   { groupe: "Armes en ébonite", categorie: "Armes", licence: "ebonite",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Arc",               mo: null, prix: null },
-    { nom: "Flèches x80",       mo: null, prix: null },
-    { nom: "Dague",             mo: null, prix: null },
-    { nom: "Épée",              mo: null, prix: null },
-    { nom: "Hache",             mo: null, prix: null },
-    { nom: "Masse",             mo: null, prix: null },
-    { nom: "Espadon",           mo: null, prix: null },
-    { nom: "Hache d'arme",      mo: null, prix: null },
-    { nom: "Marteau de guerre", mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Arc",               mat: "3 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Flèches x80",       mat: "1 lingot d'ébonite, 1 bois de chauffage (24 flèches)", mo: null, prix: null },
+    { nom: "Dague",             mat: "1 bande de cuir, 1 lingot d'ébonite", mo: null, prix: null },
+    { nom: "Épée",              mat: "1 bande de cuir, 2 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Hache",             mat: "2 bandes de cuir, 2 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Masse",             mat: "1 bande de cuir, 3 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Espadon",           mat: "3 bandes de cuir, 5 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Hache d'arme",      mat: "2 bandes de cuir, 5 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Marteau de guerre", mat: "3 bandes de cuir, 5 lingots d'ébonite", mo: null, prix: null },
   ]},
 
   /* ------------------------ ARMURES LOURDES ------------------------ */
@@ -170,12 +170,12 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Armure d'ébonite", categorie: "Armures lourdes", licence: "ebonite",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Casque",            mo: null, prix: null },
-    { nom: "Armure",            mo: null, prix: null },
-    { nom: "Gantelets",         mo: null, prix: null },
-    { nom: "Bottes",            mo: null, prix: null },
-    { nom: "Bouclier",          mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Casque",            mat: "2 bandes de cuir, 3 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Armure",            mat: "3 bandes de cuir, 5 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Gantelets",         mat: "2 bandes de cuir, 2 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Bottes",            mat: "2 bandes de cuir, 3 lingots d'ébonite", mo: null, prix: null },
+    { nom: "Bouclier",          mat: "1 bande de cuir, 4 lingots d'ébonite", mo: null, prix: null },
   ]},
 
   /* ------------------------ ARMURES LÉGÈRES ------------------------ */
@@ -204,19 +204,19 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Armure en cuir", categorie: "Armures légères", items: [
-    { nom: "Casque",    mo: 4, prix: 24 },
-    { nom: "Armure",    mo: 7, prix: 38 },
-    { nom: "Gantelets", mo: 3, prix: 20 },
-    { nom: "Bottes",    mo: 3, prix: 25 },
+    { nom: "Casque",    mat: "1 bande de cuir, 2 cuirs", mo: 4, prix: 24 },
+    { nom: "Armure",    mat: "3 bandes de cuir, 4 cuirs", mo: 7, prix: 38 },
+    { nom: "Gantelets", mat: "2 bandes de cuir, 1 cuir", mo: 3, prix: 20 },
+    { nom: "Bottes",    mat: "2 bandes de cuir, 2 cuirs", mo: 3, prix: 25 },
     { nom: "Bouclier",  mo: 5, prix: 36 },
   ]},
 
   { groupe: "Armure en peaux", categorie: "Armures légères", items: [
-    { nom: "Casque",         mo: 3, prix: 24 },
-    { nom: "Armure",         mo: 5, prix: 38 },
-    { nom: "Gantelets",      mo: 4, prix: 20 },
-    { nom: "Bottes",         mo: 4, prix: 25 },
-    { nom: "Bouclier",       mo: 4, prix: 36 },
+    { nom: "Casque",         mat: "1 bande de cuir, 2 cuirs", mo: 3, prix: 24 },
+    { nom: "Armure",         mat: "3 bandes de cuir, 4 cuirs", mo: 5, prix: 38 },
+    { nom: "Gantelets",      mat: "2 bandes de cuir, 1 cuir", mo: 4, prix: 20 },
+    { nom: "Bottes",         mat: "2 bandes de cuir, 2 cuirs", mo: 4, prix: 25 },
+    { nom: "Bouclier",       mat: "2 bandes de cuir, 4 cuirs", mo: 4, prix: 36 },
     { nom: "Large fourrure", mo: 3, prix: 20 },
   ]},
 
@@ -230,7 +230,7 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Armure cloutée", categorie: "Armures légères", items: [
-    { nom: "Armure", mo: 4, prix: 44 },
+    { nom: "Armure", mat: "3 bandes de cuir, 4 cuirs, 1 lingot de fer", mo: 4, prix: 44 },
   ]},
 
   { groupe: "Armure commune légère", categorie: "Armures légères", items: [
@@ -289,12 +289,12 @@ const CATALOGUE = [
   ]},
 
   { groupe: "Armure de verre", categorie: "Armures légères", licence: "verre",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Casque",            mo: null, prix: null },
-    { nom: "Armure",            mo: null, prix: null },
-    { nom: "Gantelets",         mo: null, prix: null },
-    { nom: "Bottes",            mo: null, prix: null },
-    { nom: "Bouclier",          mo: null, prix: null },
+    note: "Prix à compléter.", items: [
+    { nom: "Casque",            mat: "1 bande de cuir, 1 cuir, 2 malachites raffinées, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Armure",            mat: "3 bandes de cuir, 1 cuir, 4 malachites raffinées, 2 pierres de lune raffinées", mo: null, prix: null },
+    { nom: "Gantelets",         mat: "2 bandes de cuir, 1 cuir, 1 malachite raffinée, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Bottes",            mat: "2 bandes de cuir, 1 cuir, 2 malachites raffinées, 1 pierre de lune raffinée", mo: null, prix: null },
+    { nom: "Bouclier",          mat: "2 bandes de cuir, 4 malachites raffinées, 1 pierre de lune raffinée", mo: null, prix: null },
   ]},
 
   /* ----------------------------- OUTILS ---------------------------- */

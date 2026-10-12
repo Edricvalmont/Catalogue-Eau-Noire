@@ -173,10 +173,10 @@ img { max-width: 100%; }
 .toolbar {
   position: sticky; top: 71px; z-index: 10;
   display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
-  padding: 14px 0; margin-bottom: 18px;
+  padding: 16px 22px; margin-bottom: 22px;
   background: linear-gradient(rgba(19, 18, 21, .96), rgba(19, 18, 21, .9));
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--ligne);
+  border: 1px solid var(--ligne); border-radius: 22px;
 }
 #search {
   flex: 1 1 240px; min-width: 0; padding: 10px 18px; border-radius: 999px;
@@ -479,7 +479,7 @@ img { max-width: 100%; }
 
 @media (max-width: 640px) {
   .brand-text small { display: none; }
-  .toolbar { top: 75px; gap: 10px; }
+  .toolbar { top: 75px; gap: 10px; padding: 12px 14px; border-radius: 18px; }
   .tabs, .toggles { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
   .set.has-apercu .set-body { grid-template-columns: 1fr; }

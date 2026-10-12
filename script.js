@@ -201,8 +201,8 @@
   $("#search").addEventListener("input", render);
   const tLic = $("#t-lic"), tMat = $("#t-mat");
   tLic.onchange = () => { licOnly = tLic.checked; render(); };
-  tMat.checked = store.get("mat", false);
-  const applyMat = () => { document.body.classList.toggle("show-mat", tMat.checked); store.set("mat", tMat.checked); };
+  tMat.checked = store.get("recettes", true);
+  const applyMat = () => { document.body.classList.toggle("show-mat", tMat.checked); store.set("recettes", tMat.checked); };
   tMat.onchange = applyMat; applyMat();
 
   document.addEventListener("keydown", e => {
