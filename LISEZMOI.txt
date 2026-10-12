@@ -29,34 +29,45 @@ PAGE DES STOCKS (stocks.html)
   A) STOCKS EN DIRECT (recommandé) — les forgerons modifient sur le site
      Les quantités sont gardées dans une feuille Google. Sur la page Stocks,
      on active « Modifier », on ajuste, on entre son nom et le mot de passe
-     de la forge, puis « Enregistrer » : tout le monde voit le changement
-     tout de suite, sans git push. Chaque changement est noté dans l'onglet
+     de la forge, puis « Enregistrer » : la page se met à jour aussitôt
+     pour lui, et en 20 secondes maximum pour ceux qui l'ont déjà ouverte,
+     sans git push. Chaque changement est noté dans l'onglet
      « Historique » de la feuille (date, forgeron, ancienne et nouvelle valeur).
 
      Mise en place (une seule fois, 5 minutes) :
-       1. Sur drive.google.com : Nouveau > Google Sheets (feuille vide,
-          nomme-la par ex. « Stocks Eau Noire »).
-       2. Dans la feuille : Extensions > Apps Script. Efface le code présent,
-          colle tout le contenu de stocks-serveur.gs, puis Enregistrer.
-       3. Ligne 14, remplace "change-moi" par le mot de passe de la forge.
-          Enregistre.
-       4. Bouton bleu « Déployer » > « Nouveau déploiement ».
+       1. Va sur script.google.com > « Nouveau projet » (ou, depuis une
+          feuille Google : Extensions > Apps Script).
+       2. Efface le code présent, colle tout le contenu de stocks-serveur.gs,
+          puis Enregistrer (icône disquette).
+       3. Au début du code, remplace "change-moi" par le mot de passe de la
+          forge. Enregistre.
+       4. En haut, choisis la fonction « installer » puis clique « Exécuter ».
+          Autorise l'accès avec ton compte Google (« Paramètres avancés » >
+          « Accéder à ... » si Google avertit). Le journal affiche l'adresse
+          de la feuille « Stocks Eau Noire », créée dans ton Google Drive.
+       5. Bouton bleu « Déployer » > « Nouveau déploiement ».
           Roue dentée > « Application Web ».
             Exécuter en tant que : Moi
             Qui peut accéder     : Tout le monde
-          Clique « Déployer », autorise l'accès avec ton compte Google
-          (« Paramètres avancés » > « Accéder à ... » si Google avertit).
-       5. Copie l'« URL de l'application Web » (elle finit par /exec).
-       6. Dans stocks.js, colle-la entre les guillemets :
+          Clique « Déployer ».
+       6. Copie l'« URL de l'application Web » (elle finit par /exec).
+       7. Dans stocks.js, colle-la entre les guillemets :
             const STOCKS_EN_LIGNE = "https://script.google.com/macros/s/.../exec";
-       7. git add . / git commit -m "Stocks en direct" / git push
+       8. git add . / git commit -m "Stocks en direct" / git push
+
+     Après toute modification du code Google : Déployer > Gérer les
+     déploiements > crayon > Version : « Nouvelle version » > Déployer.
+     L'adresse /exec reste la même, inutile de toucher à stocks.js.
+
+     Vérifier que ça marche : ouvre l'adresse /exec dans ton navigateur.
+     Tu dois voir une ligne qui commence par {"qte":. Si tu vois une erreur,
+     le site affichera « Stocks en direct injoignables ».
 
      La feuille démarre vide : tant qu'un matériau n'a jamais été enregistré,
      la page affiche la quantité de stocks.js. Tu peux aussi corriger une
      quantité directement dans l'onglet « Stocks » de la feuille.
-     Changer le mot de passe : modifie la ligne 14, puis Déployer > Gérer les
-     déploiements > crayon > Version : Nouvelle version > Déployer
-     (l'adresse /exec reste la même).
+     Changer le mot de passe : modifie-le dans le code, puis publie une
+     nouvelle version comme expliqué ci-dessus.
      Le nom et le mot de passe sont retenus par le navigateur de chaque
      forgeron : ne les saisis pas sur un ordinateur partagé.
 

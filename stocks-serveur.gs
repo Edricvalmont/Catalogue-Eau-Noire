@@ -1,9 +1,13 @@
 /* =====================================================================
    L'EAU NOIRE — SERVEUR DES STOCKS (Google Apps Script)
    ---------------------------------------------------------------------
-   Ce code ne va PAS sur GitHub : il se colle dans l'éditeur Apps Script
-   d'une feuille Google (Extensions > Apps Script). Voir LISEZMOI.txt,
-   section « Stocks en direct ».
+   Ce code ne va PAS sur GitHub : il se colle dans un projet Apps Script
+   (script.google.com). Voir LISEZMOI.txt, section « Stocks en direct ».
+
+   Il fonctionne aussi bien attaché à une feuille Google (Extensions >
+   Apps Script) que seul : dans ce cas, il crée lui-même une feuille
+   « Stocks Eau Noire » dans ton Google Drive au premier lancement.
+   Lance une fois la fonction « installer » pour obtenir son adresse.
 
    La feuille contient deux onglets créés automatiquement :
      Stocks     : id | quantité | nom          (l'état actuel)
@@ -68,11 +72,31 @@ function lire() {
   return { qte: qte, maj: props.getProperty("maj") || "", par: props.getProperty("par") || "" };
 }
 
+// À lancer une fois depuis l'éditeur (bouton « Exécuter ») :
+// autorise le script, crée la feuille et affiche son adresse dans le journal.
+function installer() {
+  feuille("Stocks"); feuille("Historique");
+  Logger.log("Feuille des stocks : " + classeur().getUrl());
+}
+
+// Trouve la feuille : celle à laquelle le script est attaché, sinon celle
+// créée au premier lancement (son identifiant est gardé dans le script).
+function classeur() {
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty("feuille");
+  if (id) return SpreadsheetApp.openById(id);
+  const nouveau = SpreadsheetApp.create("Stocks Eau Noire");
+  props.setProperty("feuille", nouveau.getId());
+  return nouveau;
+}
+
 function feuille(nom) {
-  const classeur = SpreadsheetApp.getActiveSpreadsheet();
-  let f = classeur.getSheetByName(nom);
+  const c = classeur();
+  let f = c.getSheetByName(nom);
   if (!f) {
-    f = classeur.insertSheet(nom);
+    f = c.insertSheet(nom);
     f.appendRow(nom === "Stocks" ? ["id", "quantité", "nom"] : ["date", "forgeron", "matériau", "ancienne", "nouvelle"]);
     f.setFrozenRows(1);
   }

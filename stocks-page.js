@@ -211,9 +211,9 @@
 
   if (ONLINE) {
     charger();
-    // Rafraîchit quand on revient sur l'onglet et toutes les 60 s (si on ne modifie rien)
+    // Rafraîchit quand on revient sur l'onglet et toutes les 20 s (si on ne modifie rien)
     document.addEventListener("visibilitychange", () => { if (!document.hidden && !changedIds().length) charger(); });
-    setInterval(() => { if (!document.hidden && !changedIds().length && !saving) charger(); }, 60000);
+    setInterval(() => { if (!document.hidden && !changedIds().length && !saving) charger(); }, 20000);
   }
 
   /* ---------- Mode FICHIER : export d'un nouveau stocks.js ---------- */
