@@ -29,14 +29,26 @@
   }
 
   /* ---------- Préparation des données ---------- */
-  CATALOGUE.forEach(g => { g.items = g.items.map(it => ({ ...it })); });
+  // Sous-blocs (variantes) : chaque objet reprend la recette, la main
+  // d'œuvre et le prix de l'objet du bloc principal portant le même nom.
+  CATALOGUE.forEach(g => {
+    g.items = g.items.map(it => ({ ...it }));
+    g.sousBlocs = (g.sousBlocs || []).map(sb => ({ ...sb, items: sb.items.map(it => {
+      const base = g.items.find(b => b.nom === it.nom) || {};
+      return { mat: base.mat, mo: base.mo, prix: base.prix, ...it };
+    }) }));
+  });
   const ITEMS = {};
-  CATALOGUE.forEach(g => g.items.forEach(it => {
-    it._id = slug(g.groupe) + "-" + slug(it.nom);
-    it._groupe = g.groupe;
-    it._search = norm([g.groupe, g.categorie, it.nom, it.mat, g.licence ? "licence " + (LIC.origines[g.licence]?.nom || "") : ""].join(" "));
+  const prep = (g, it, prefixe, libelle) => {
+    it._id = slug(prefixe) + "-" + slug(it.nom);
+    it._groupe = libelle;
+    it._search = norm([g.groupe, libelle, g.categorie, it.nom, it.mat, g.licence ? "licence " + (LIC.origines[g.licence]?.nom || "") : ""].join(" "));
     ITEMS[it._id] = it;
-  }));
+  };
+  CATALOGUE.forEach(g => {
+    g.items.forEach(it => prep(g, it, g.groupe, g.groupe));
+    g.sousBlocs.forEach(sb => sb.items.forEach(it => prep(g, it, sb.nom, g.groupe + " (" + sb.nom + ")")));
+  });
 
   let cat = "Tout";
   let licOnly = false;
@@ -61,26 +73,41 @@
     const list = JSON.parse(img.dataset.tries), i = +img.dataset.i + 1;
     if (i < list.length) { img.dataset.i = i; img.src = list[i]; return; }
     if (img.classList.contains("apercu-img")) {
-      const s = img.closest(".set"); img.closest(".apercu")?.remove(); s?.classList.remove("has-apercu");
+      const s = img.closest(".set-body"); img.closest(".apercu")?.remove(); s?.classList.remove("has-apercu");
     } else {
       const ph = document.createElement("div"); ph.className = "ph"; ph.title = "Image attendue : " + list[0]; img.replaceWith(ph);
     }
   }, true);
 
   /* ---------- Catalogue ---------- */
+  const card = it => `<div class="card">
+    <div class="card-img">${imgTag("item-img", it.img ? ["images/" + it.img] : tries("images/" + it._id), it.nom)}</div>
+    <div class="card-info">
+      <span class="card-name">${esc(it.nom)}</span>
+      ${it.mat ? `<span class="card-mat">${esc(it.mat)}</span>` : ""}
+      <div class="card-foot">
+        <div>
+          <div class="card-price">${it.prix == null ? '<span class="na">Sur devis</span>' : fmt(it.prix)}</div>
+          ${it.mo != null ? `<div class="card-mo">Main d'œuvre : ${it.mo}</div>` : ""}
+        </div>
+        <button class="add" type="button" data-id="${it._id}" title="Ajouter au devis">+</button>
+      </div>
+    </div>
+  </div>`;
+
   function render() {
     const words = norm($("#search").value).split(/\s+/).filter(Boolean);
     let html = "";
     CATALOGUE.forEach(g => {
       if (cat !== "Tout" && g.categorie !== cat) return;
       if (licOnly && !g.licence) return;
-      const items = g.items.filter(it => words.every(w => it._search.includes(w)));
-      if (!items.length) return;
+      const match = it => words.every(w => it._search.includes(w));
+      const blocs = [{ nom: g.groupe, apercu: g.apercu, items: g.items.filter(match), principal: true },
+        ...g.sousBlocs.map(sb => ({ ...sb, items: sb.items.filter(match) }))].filter(b => b.items.length);
+      if (!blocs.length) return;
       const o = g.licence ? LIC.origines[g.licence] : null;
-      const apercu = g.apercu === false ? "" : `<figure class="apercu">
-          ${imgTag("apercu-img", g.apercu ? ["images/" + g.apercu] : tries("images/apercu-" + slug(g.groupe)), "Aperçu porté : " + g.groupe)}
-          <figcaption>Aperçu porté</figcaption></figure>`;
-      html += `<article class="set${apercu ? " has-apercu" : ""}" id="set-${slug(g.groupe)}">
+      const sousTitres = g.sousBlocs.length > 0;
+      html += `<article class="set" id="set-${slug(g.groupe)}">
         <div class="set-head">
           <h3>${esc(g.groupe)}</h3>
           <span class="set-cat">${esc(g.categorie)}</span>
@@ -88,25 +115,19 @@
         </div>
         ${o ? `<p class="set-note lic">Licence ${esc(o.nom)}${o.autorite ? " (" + esc(o.autorite) + ")" : ""} · fabrication ${fmt(LIC.fabrication)}</p>` : ""}
         ${g.note ? `<p class="set-note">${esc(g.note)}</p>` : ""}
-        <div class="set-body">
-          ${apercu}
-          <div class="cards">
-            ${items.map(it => `<div class="card">
-              <div class="card-img">${imgTag("item-img", it.img ? ["images/" + it.img] : tries("images/" + it._id), it.nom)}</div>
-              <div class="card-info">
-                <span class="card-name">${esc(it.nom)}</span>
-                ${it.mat ? `<span class="card-mat">${esc(it.mat)}</span>` : ""}
-                <div class="card-foot">
-                  <div>
-                    <div class="card-price">${it.prix == null ? '<span class="na">Sur devis</span>' : fmt(it.prix)}</div>
-                    ${it.mo != null ? `<div class="card-mo">Main d'œuvre : ${it.mo}</div>` : ""}
-                  </div>
-                  <button class="add" type="button" data-id="${it._id}" title="Ajouter au devis">+</button>
-                </div>
-              </div>
-            </div>`).join("")}
-          </div>
-        </div>
+        ${sousTitres ? `<p class="set-note">Variantes aux mêmes caractéristiques, recette et prix.</p>` : ""}
+        ${blocs.map(b => {
+          const apercu = b.apercu === false ? "" : `<figure class="apercu">
+            ${imgTag("apercu-img", b.apercu ? ["images/" + b.apercu] : tries("images/apercu-" + slug(b.nom)), "Aperçu porté : " + b.nom)}
+            <figcaption>Aperçu porté</figcaption></figure>`;
+          return `${sousTitres ? `<h4 class="sub-head">${esc(b.principal ? (g.titrePrincipal || b.nom.replace(/^Armure (en |d')/i, "").replace(/^./, c => c.toUpperCase())) : b.nom)}</h4>` : ""}
+          <div class="set-body${apercu ? " has-apercu" : ""}">
+            ${apercu}
+            <div class="cards">
+              ${b.items.map(card).join("")}
+            </div>
+          </div>`;
+        }).join("")}
       </article>`;
     });
     $("#list").innerHTML = html || '<p class="empty">Aucun objet trouvé.</p>';

@@ -114,7 +114,19 @@ const CATALOGUE = [
     { nom: "Gantelets", mat: "2 bandes de cuir, 2 lingots d'acier, 1 lingot de fer", mo: 10, prix: 44 },
     { nom: "Bottes",    mat: "2 bandes de cuir, 3 lingots d'acier, 1 lingot de fer", mo: 12, prix: 53 },
     { nom: "Bouclier",  mat: "1 bande de cuir, 3 lingots d'acier, 1 lingot de fer",  mo: 12, prix: 52 },
-  ]},
+  ],
+    /* Variantes : mêmes caractéristiques, recette et prix que la pièce
+       d'acier du même nom (repris automatiquement). Images :
+       images/<variante>-<objet>.webp, ex. rugged-casque.webp */
+    sousBlocs: [
+      { nom: "Lamellar", items: [
+        { nom: "Armure" }, { nom: "Gantelets" }, { nom: "Bottes" }, { nom: "Casque" },
+      ]},
+      { nom: "Rugged", apercu: false, items: [
+        { nom: "Armure" }, { nom: "Gantelets" }, { nom: "Bottes" }, { nom: "Casque" }, { nom: "Bouclier" },
+      ]},
+    ],
+  },
 
   /* Dwemer : 3 variantes visuelles, mêmes matériaux et mêmes prix.
      Les prix se changent UNE seule fois dans RECETTE_DWEMER (en haut du fichier). */
@@ -157,17 +169,7 @@ const CATALOGUE = [
     { nom: "Bouclier",  mat: "2 bandes de cuir, 4 lingots d'acier",          mo: null, prix: null },
   ]},
 
-  { groupe: "Armure commune lourde", categorie: "Armures lourdes", items: [
-    { nom: "Armure", mo: 10, prix: 45 },
-  ]},
 
-  { groupe: "Lamellar", categorie: "Armures lourdes",
-    note: "Recette et prix à compléter.", items: [
-    { nom: "Armure",                mo: null, prix: null },
-    { nom: "Gantelets",             mo: null, prix: null },
-    { nom: "Bottes",                mo: null, prix: null },
-    { nom: "Casque",                mo: null, prix: null },
-  ]},
 
   { groupe: "Armure d'ébonite", categorie: "Armures lourdes", licence: "ebonite",
     note: "Prix à compléter.", items: [
@@ -217,7 +219,6 @@ const CATALOGUE = [
     { nom: "Gantelets",      mat: "2 bandes de cuir, 1 cuir", mo: 4, prix: 20 },
     { nom: "Bottes",         mat: "2 bandes de cuir, 2 cuirs", mo: 4, prix: 25 },
     { nom: "Bouclier",       mat: "2 bandes de cuir, 4 cuirs", mo: 4, prix: 36 },
-    { nom: "Large fourrure", mo: 3, prix: 20 },
   ]},
 
   { groupe: "Armure en fourrure", categorie: "Armures légères", items: [
@@ -261,14 +262,6 @@ const CATALOGUE = [
     { nom: "Casque",                mat: "2 bandes de cuir, 2 lingots d'orichalque, 1 lingot de fer", mo: null, prix: null },
   ]},
 
-  { groupe: "Rugged", categorie: "Armures légères",
-    note: "Prix à compléter.", items: [
-    { nom: "Armure",                mat: "3 bandes de cuir, 4 cuirs", mo: null, prix: null },
-    { nom: "Gantelets",             mat: "2 bandes de cuir, 1 cuir", mo: null, prix: null },
-    { nom: "Bottes",                mat: "2 bandes de cuir, 2 cuirs", mo: null, prix: null },
-    { nom: "Casque",                mat: "1 bande de cuir, 2 cuirs", mo: null, prix: null },
-    { nom: "Bouclier",              mat: "2 bandes de cuir, 4 cuirs", mo: null, prix: null },
-  ]},
 
   { groupe: "Peau", categorie: "Armures légères",
     note: "Prix à compléter.", items: [
