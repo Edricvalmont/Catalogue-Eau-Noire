@@ -417,6 +417,7 @@ img { max-width: 100%; }
 .bas .bar i { background: var(--bas); }
 .rupture .bar i { background: var(--rupture); }
 .stock-seuil { font-size: .72rem; color: var(--sable); }
+.stock-recette { font-size: .74rem; line-height: 1.35; color: var(--bronze-clair); opacity: .85; }
 .stock-qty { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
 .stock-qty strong { font-weight: 300; font-size: 1.9rem; line-height: 1; }
 .stock-qty small { font-size: .7rem; color: var(--sable); }

@@ -22,7 +22,7 @@
 
   /* ---------- Données ---------- */
   const ALL = [];
-  STOCKS.categories.forEach(c => c.items.forEach(it => { it._cat = c.nom; it._search = norm(it.nom + " " + c.nom); ALL.push(it); }));
+  STOCKS.categories.forEach(c => c.items.forEach(it => { it._cat = c.nom; it._search = norm(it.nom + " " + c.nom + " " + (it.info || "")); ALL.push(it); }));
   const byId = Object.fromEntries(ALL.map(it => [it.id, it]));
 
   // Quantités « officielles » : feuille Google en direct, sinon stocks.js
@@ -121,6 +121,7 @@
             <div class="stock-icon"><img src="${esc(src)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph'}))"></div>
             <div class="stock-info">
               <span class="stock-name">${esc(it.nom)}</span>
+              ${it.info ? `<span class="stock-recette">${esc(it.info)}</span>` : ""}
               <span class="chip ${e}">${LABEL[e]}</span>
               <div class="bar"><i style="width:${pct}%"></i></div>
               <span class="stock-seuil">${it.seuil > 0 ? "Seuil : " + nb(it.seuil) : "Pas de seuil"}${changed ? ` · avant : ${nb(base(it))}` : ""}</span>
@@ -223,7 +224,7 @@
     const today = new Date().toISOString().slice(0, 10);
     const pad = (s, n) => s + " ".repeat(Math.max(1, n - s.length));
     const body = STOCKS.categories.map(c => `    { nom: ${JSON.stringify(c.nom)}, items: [\n` +
-      c.items.map(it => `      { id: ${pad(JSON.stringify(it.id) + ",", 38)}nom: ${pad(JSON.stringify(it.nom) + ",", 38)}qte: ${qte(it)}, seuil: ${it.seuil}${it.img ? ", img: " + JSON.stringify(it.img) : ""} },`).join("\n") +
+      c.items.map(it => `      { id: ${pad(JSON.stringify(it.id) + ",", 38)}nom: ${pad(JSON.stringify(it.nom) + ",", 38)}qte: ${qte(it)}, seuil: ${it.seuil}${it.img ? ", img: " + JSON.stringify(it.img) : ""}${it.info ? ", info: " + JSON.stringify(it.info) : ""} },`).join("\n") +
       `\n    ]},`).join("\n");
     const file = `/* =====================================================================
    STOCKS DE LA FORGE DE L'EAU NOIRE
@@ -232,6 +233,7 @@
    seuil : en dessous de ce nombre, le matériau passe en « stock bas »
            (à 0 il est « en rupture »). Seuil 0 = aucun minimum requis
    img   : (optionnel) autre image que images/materiaux/<id>.webp
+   info  : (optionnel) texte affiché sous le nom (recette, rendement…)
 
    Méthode la plus simple : sur la page Stocks, activez « Modifier »,
    ajustez les quantités puis cliquez « Exporter stocks.js ». Remplacez
