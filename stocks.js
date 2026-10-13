@@ -19,18 +19,6 @@ const STOCKS = {
   maj: "2026-10-11",   // date de la dernière mise à jour (AAAA-MM-JJ)
   par: "",             // (optionnel) qui a fait l'inventaire
   categories: [
-    { nom: "Minerais", items: [
-      { id: "minerai-de-fer",                      nom: "Minerai de fer",                      qte: 0, seuil: 500 },
-      { id: "minerai-d-argent",                    nom: "Minerai d'argent",                    qte: 0, seuil: 60 },
-      { id: "minerai-d-or",                        nom: "Minerai d'or",                        qte: 0, seuil: 60 },
-      { id: "minerai-de-corindon",                 nom: "Minerai de corindon",                 qte: 0, seuil: 500 },
-      { id: "minerai-d-orichalque",                nom: "Minerai d'orichalque",                qte: 0, seuil: 0 },
-      { id: "minerai-de-vif-argent",               nom: "Minerai de vif-argent",               qte: 0, seuil: 72 },
-      { id: "minerai-de-malachite",                nom: "Minerai de malachite",                qte: 0, seuil: 60 },
-      { id: "minerai-de-pierre-de-lune",           nom: "Minerai de pierre de lune",           qte: 0, seuil: 72 },
-      { id: "minerai-d-ebonite",                   nom: "Minerai d'ébonite",                   qte: 0, seuil: 0 },
-      { id: "stalhrim",                            nom: "Stalhrim",                            qte: 0, seuil: 0 },
-    ]},
     { nom: "Lingots", items: [
       { id: "lingot-de-fer",                       nom: "Lingot de fer",                       qte: 0, seuil: 90 },
       { id: "lingot-d-acier",                      nom: "Lingot d'acier",                      qte: 0, seuil: 300 },
@@ -70,12 +58,8 @@ const STOCKS = {
       { id: "cuir-de-netch",                       nom: "Cuir de netch",                       qte: 0, seuil: 10 },
       { id: "morceau-de-lin",                      nom: "Morceau de lin",                      qte: 0, seuil: 40 },
     ]},
-    { nom: "Combustibles et matériaux rares", items: [
+    { nom: "Bois et matériaux rares", items: [
       { id: "bois-de-chauffage",                   nom: "Bois",                                qte: 0, seuil: 10000 },
-      { id: "charbon",                             nom: "Charbon",                             qte: 0, seuil: 1000 },
-      { id: "charbon-pauvre",                      nom: "Charbon pauvre",                      qte: 0, seuil: 400, img: "charbon.webp" },
-      { id: "briquette-de-charbon",                nom: "Briquette de charbon",                qte: 0, seuil: 200, img: "charbon.webp" },
-      { id: "coke",                                nom: "Coke",                                qte: 0, seuil: 60, img: "charbon.webp" },
       { id: "chitine-de-chaurus",                  nom: "Chitine de chaurus",                  qte: 0, seuil: 10 },
       { id: "plaque-de-chitine",                   nom: "Plaque de chitine",                   qte: 0, seuil: 10 },
     ]},

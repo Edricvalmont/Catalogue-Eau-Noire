@@ -16,8 +16,8 @@ DATA.JS EST COMPATIBLE AVEC LE CATALOGUE D'EDRIC
   il est propre à chaque site.
 
 PAGE DES STOCKS (stocks.html)
-  stocks.js       -> quantités et seuils de chaque matériau (minerais, lingots,
-                     ferraille dwemer, cuirs et peaux, combustibles, rares)
+  stocks.js       -> quantités et seuils de chaque matériau (lingots, ferraille
+                     dwemer, cuirs et peaux, bois et matériaux rares)
   stocks-page.js  -> fonctionnement de la page
   images/materiaux/ -> icônes des matériaux
 
